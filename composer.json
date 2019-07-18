@@ -1,0 +1,17 @@
+{
+    "name": "n07-5l4y3r/over-knee-san",
+    "description": "A customized Discord-Bot written in PHP",
+    "type": "project",
+    "license": "The Unlicense",
+    "authors": [
+        {
+            "name": "n07-5l4y3r",
+            "email": "n07-5l4y3r@github.com"
+        }
+    ],
+    "require": {
+        "team-reflex/discord-php": "^4.0"
+    },
+    "require-dev": {
+    }
+}
