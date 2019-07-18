@@ -1,0 +1,7 @@
+<?php
+
+  //rename this file to settings.php
+
+  $bot_token = 'your-token-here';
+
+?>
