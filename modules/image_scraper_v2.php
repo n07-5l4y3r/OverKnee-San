@@ -35,6 +35,11 @@
           //gelbooru api seems to have a problem with pages > 200
           if ($i_pge > 200) $i_pge = rand(0,200);
 
+          //fix indexie
+          zerobase($i_rnd);
+          zerobase($i_pge);
+          zerobase($p_pge);
+
           $api_ret = getRequest([
             "protocol" => "https",
             "site" => "gelbooru.com",
@@ -86,6 +91,11 @@
 
           $i_pge = intdiv($i_rnd, 100) - 1;
           $p_pge = $i_rnd % 100 - 1;
+
+          //fix indexie
+          zerobase($i_rnd);
+          zerobase($i_pge);
+          zerobase($p_pge);
 
           $api_ret = getRequest([
             "protocol" => "https",
@@ -139,6 +149,11 @@
           $i_pge = intdiv($i_rnd, 100) - 1;
           $p_pge = $i_rnd % 100 - 1;
 
+          //fix indexie
+          zerobase($i_rnd);
+          zerobase($i_pge);
+          zerobase($p_pge);
+
           //r34 api seems to have a problem with pages > 2000
           if ($i_pge > 2000) $i_pge = rand(0,2000);
 
@@ -191,6 +206,11 @@
           $i_pge = intdiv($i_rnd, 100) - 1;
           $p_pge = $i_rnd % 100 - 1;
 
+          //fix indexie
+          zerobase($i_rnd);
+          zerobase($i_pge);
+          zerobase($p_pge);
+
           //r34 api seems to have a problem with pages > 2000
           if ($i_pge > 750) $i_pge = rand(0,750);
 
@@ -224,7 +244,9 @@
     do {
       if (!count($boorus)) break;
 
-      $booru_index = rand(0,max(0,count($boorus)-1));
+      $booru_index = rand(0,count($boorus));
+      zerobase($booru_index);
+
       $booru = $boorus[$booru_index];
 
       //unset elm
@@ -318,6 +340,12 @@
     } catch (Exception $e) { }
 
     return $content;
+  }
+
+  function zerobase(&...$args) {
+    foreach ($args as &$arg) {
+        $arg = max($arg,0);
+    }
   }
 
 ?>
