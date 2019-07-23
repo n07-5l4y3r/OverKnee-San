@@ -226,7 +226,11 @@
 
       $booru_index = rand(0,max(0,count($boorus)-1));
       $booru = $boorus[$booru_index];
+
+      //unset elm
       unset($boorus[$booru_index]);
+      //reindex
+      $boorus = array_values($boorus);
 
       if ( !is_callable($booru_sources[$booru]["random"]) ) continue;
 
