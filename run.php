@@ -7,7 +7,7 @@ require_once __DIR__.'/settings.php';
 include __DIR__.'/vendor/autoload.php';
 
 // modules
-require_once __DIR__.'/modules/random_booru_scraper.php';
+require_once __DIR__.'/modules/image_scraper_v2.php';
 
 // init DiscordPHP
 $discord = new \Discord\DiscordCommandClient([
@@ -20,6 +20,7 @@ $discord = new \Discord\DiscordCommandClient([
 $discord->registerCommand(
   'source',
   function ($message){
+    echo "-source-" . PHP_EOL;
     return "Hey look I'm Open-Source: https://github.com/n07-5l4y3r/OverKnee-San";
   },
   [
@@ -31,6 +32,7 @@ $discord->registerCommand(
 $discord->registerCommand(
   'ping',
   function ($message){
+    echo "-ping-" . PHP_EOL;
     return 'pong!';
   },
   [
@@ -38,36 +40,33 @@ $discord->registerCommand(
   ]
 );
 
+// list_boorus
+$discord->registerCommand(
+  'list_boorus',
+  function ($message, $params){
+    echo "-list_boorus-" . PHP_EOL;
+    global $booru_sources;
+    $str = "";
+    foreach($booru_sources as $booru_name => $val)
+    {
+      $str .= $booru_name . "\n";
+    }
+    return $str;
+  },
+  [
+    'description' => 'list possible boorus'
+  ]
+);
+
 // booru
-$booru = $discord->registerCommand(
+$discord->registerCommand(
   'booru',
-  function ($message){
-    return 'use: booru <sfw/nsfw> [tag-1 tag-2 ... tag-n]';
-  },
-  [
-    'description' => 'use: booru <sfw/nsfw> [tag-1 tag-2 ... tag-n]'
-  ]
-);
-
-// booru sfw
-$booru->registerSubCommand(
-  'sfw',
   function ($message, $params){
-    return booru_random(true, $params);
+    echo "-booru-" . PHP_EOL;
+    return booru_random_caller($params);
   },
   [
-    'description' => "random image from https://safebooru.org"
-  ]
-);
-
-// booru nsfw
-$booru->registerSubCommand(
-  'nsfw',
-  function ($message, $params){
-    return booru_random(false, $params);
-  },
-  [
-    'description' => "random image from https://gelbooru.com"
+    'description' => 'use: booru [image source names or tags]'
   ]
 );
 
@@ -79,6 +78,7 @@ function isJson($string) {
 $discord->registerCommand(
   'chuck',
   function ($message){
+    echo "-chuck-" . PHP_EOL;
     $api_ret = file_get_contents("https://api.chucknorris.io/jokes/random");
     if ( !isJson($api_ret) )
       return "api error";
@@ -94,6 +94,7 @@ $discord->registerCommand(
 $discord->registerCommand(
   'geoip',
   function ($message, $params){
+    echo "-geoip-" . PHP_EOL;
     if (count($params))
     {
       $api_ret = file_get_contents("http://ip-api.com/json/".$params[0]);
@@ -125,6 +126,7 @@ $discord->registerCommand(
 $discord->registerCommand(
   'joke',
   function ($message){
+    echo "-joke-" . PHP_EOL;
     $api_ret = file_get_contents("https://sv443.net/jokeapi/category/Programming");
     if ( !isJson($api_ret) )
       return "api error";
@@ -153,6 +155,7 @@ $discord->registerCommand(
 $discord->registerCommand(
   'iss',
   function ($message){
+    echo "-iss-" . PHP_EOL;
     $api_ret = file_get_contents("http://api.open-notify.org/iss-now.json");
     if ( !isJson($api_ret) )
       return "api error";
