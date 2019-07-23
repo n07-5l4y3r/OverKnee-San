@@ -224,9 +224,11 @@
     do {
       if (!count($boorus)) break;
 
-      $booru_index = rand(0,count($boorus)-1);
+      $booru_index = rand(0,max(0,count($boorus)-1));
       $booru = $boorus[$booru_index];
       unset($boorus[$booru_index]);
+
+      if ( !is_callable($booru_sources[$booru]["random"]) ) continue;
 
       $retval = call_user_func($booru_sources[$booru]["random"],$tags);
       echo "[" . $booru . "] -> '" . $retval . "'" . PHP_EOL;
@@ -236,7 +238,7 @@
 
     if (count($images))
     {
-      return $images[rand(0,count($images) - 1)];
+      return $images[rand(0,max(count($images) - 1,0))];
     } else {
       return "error";
     }
