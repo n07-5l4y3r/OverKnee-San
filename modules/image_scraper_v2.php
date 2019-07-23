@@ -218,19 +218,22 @@
   {
     echo "booru_random_caller([" . implode(", ",$boorus) . '], [' . implode(", ",$tags) . "])" . PHP_EOL;
 
-    // - TODO -
-    // first randomize source api 
-    // only request another api if request failed
-
     global $booru_sources;
+
     $images = array();
-    foreach ( $boorus as $booru )
-    {
+    do {
+      if (!count($boorus)) break;
+
+      $booru_index = rand(0,count($boorus)-1);
+      $booru = $boorus[$booru_index];
+      unset($boorus[$booru_index]);
+
       $retval = call_user_func($booru_sources[$booru]["random"],$tags);
-      if ($retval)
-        $images[] = $retval;
       echo "[" . $booru . "] -> '" . $retval . "'" . PHP_EOL;
-    }
+
+      if ($retval) $images[] = $retval;
+    } while (!count($images));
+
     if (count($images))
     {
       return $images[rand(0,count($images) - 1)];
